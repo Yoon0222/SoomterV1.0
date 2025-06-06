@@ -1,0 +1,8 @@
+# 디폴트 무시된 파일
+/shelf/
+/workspace.xml
+/SoomterV1.0.iml
+/vcs.xml
+/misc.xml
+/inspectionProfiles/profiles_settings.xml
+/modules.xml
