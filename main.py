@@ -2,9 +2,9 @@ from dataclasses import asdict
 
 import uvicorn
 from fastapi import FastAPI
-
-
 from common.config import conf
+from database.conn import db
+
 
 def create_app():
 

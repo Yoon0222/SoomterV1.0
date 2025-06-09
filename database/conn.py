@@ -30,7 +30,7 @@ class SQLAlchemy:
         )
         self._session = sessionmaker(autocommit=False, autoflush=False, bind=self._engine)
 
-        @app.on_event("statup")
+        @app.on_event("startup")
         def startup():
             self._engine.connect()
             logging.info("DB CONNECTED")
