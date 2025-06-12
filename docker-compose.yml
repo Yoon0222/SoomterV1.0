@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  fastapi:
+    build: .
+    container_name: fastapi
+    restart: always
+    expose:
+      - "8000"
+    networks:
+      - backend
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: dbstlr23
+      MYSQL_DATABASE: soomter
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - fastapi
+    networks:
+      - backend
+
