@@ -13,6 +13,11 @@ def test():
 def aaUser(name: str, ):
     return make_response(code=400, error="Fail")
 
+@router.post("/bbUser", response_model=APIResponse)
+def bbUser(name: str, ):
+    return make_response(code=400, error="Fail")
+
+
 @router.post("/newUser", response_model=APIResponse)
 def newUser(name: str, ):
 
