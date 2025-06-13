@@ -1,20 +1,20 @@
 from sqlalchemy import Column, Integer, String, TIMESTAMP
 from sqlalchemy.sql import func
 from pydantic import BaseModel
-from database.conn import Base, ENGINE
+from database.conn import Base
 
 
-class UserSTable(Base):
-    __tableName__ = 'USERS'
-    idx = Column(Integer, primary_key=True, autoincrement=True) #Index값
-    UserId = Column(String(100), nullable=False) # 사용자ID
-    CreationDate = Column(TIMESTAMP, server_default=func.now()) #계정생성날짜
-    UserName = Column(String(100), nullable=False) #사용자이름
-    Email = Column(String(100), nullable=False) #사용자이메일
+class UsersTable(Base):
+    __tablename__ = 'USERS'
 
-class Users(BaseModel):
-    idx : int
-    UserId : String
-    CreationDate : String
-    UserName : String
-    Email : String
+    idx = Column(Integer, primary_key=True, autoincrement=True)         # 사용자 고유 ID
+    UserId = Column(String(100), nullable=False)                        # 사용자 ID
+    UserName = Column(String(100), nullable=False)                      # 사용자 이름
+    Email = Column(String(100), nullable=False)                         # 이메일
+    Password = Column(String(200), nullable=False)                      # 암호화된 비밀번호
+    CreationDate = Column(TIMESTAMP, server_default=func.now())        # 생성일시 (자동)
+
+
+class UserCreate(BaseModel):
+    UserId : str
+    Password : str

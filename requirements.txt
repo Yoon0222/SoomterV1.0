@@ -10,3 +10,6 @@ pytest
 pytest-asyncio
 requests
 dotenv
+passlib[bcrypt]
+bcrypt==3.2.0
+mysql-connector-python
