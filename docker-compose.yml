@@ -17,6 +17,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - /home/ubuntu/SoomterFront:/usr/share/nginx/html:ro  # 이거 추가!
     depends_on:
       - fastapi
     networks:
