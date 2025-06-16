@@ -10,11 +10,22 @@ class UsersTable(Base):
     idx = Column(Integer, primary_key=True, autoincrement=True)         # 사용자 고유 ID
     UserId = Column(String(100), nullable=False)                        # 사용자 ID
     UserName = Column(String(100), nullable=False)                      # 사용자 이름
-    Email = Column(String(100), nullable=False)                         # 이메일
+    UserEmail = Column(String(100), nullable=False)                         # 이메일
     Password = Column(String(200), nullable=False)                      # 암호화된 비밀번호
     CreationDate = Column(TIMESTAMP, server_default=func.now())        # 생성일시 (자동)
+    UserPhone = Column(String(100), nullable=False)
 
 
 class UserCreate(BaseModel):
+    UserId : str
+    Password : str
+    UserEmail : str
+    UserName : str
+    UserPhone : str
+
+class UserDuplicateCheck(BaseModel):
+    UserId : str
+
+class UserLogin(BaseModel):
     UserId : str
     Password : str

@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from model.response import APIResponse
 from utils.response import make_response
-from model.users import UserCreate
+from model.users import UserCreate, UserDuplicateCheck, UserLogin
 from database.conn import get_db
 
 
@@ -15,14 +15,10 @@ router = APIRouter()
 def createNewUser(user: UserCreate, db: Session = Depends(get_db)):
     return users_service.createNewUser(user, db)
 
+@router.post("/checkDup", response_model=APIResponse)
+def checkDup(user: UserDuplicateCheck, db: Session = Depends(get_db)):
+    return users_service.checkDup(user, db)
+
 @router.post("/login", response_model=APIResponse)
-def userLogin(userId: str, pwd: str):
-
-
-
-    return APIResponse
-
-
-@router.get("/test")
-def logtest():
-    return APIResponse
+def userLogin(user: UserLogin, db: Session = Depends(get_db)):
+    return users_service.userLogin(user, db)
