@@ -21,3 +21,8 @@ def userLogin(userId: str, pwd: str):
 
 
     return APIResponse
+
+
+@router.get("/test")
+def logtest():
+    return APIResponse
