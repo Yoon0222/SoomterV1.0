@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from router.users_router import router as user_router
 from router.main_router import router as main_router
+from router.map_router import router as map_router
 from utils.exception import register_exception_handlers
 
 app = FastAPI()
@@ -10,6 +11,7 @@ register_exception_handlers(app)
 
 app.include_router(user_router, prefix="/user", tags=["Users"])
 app.include_router(main_router, prefix="/main", tags=["Main"])
+app.include_router(map_router, prefix="/map", tags=["Map"])
 
 
 if __name__ == "__main__":
