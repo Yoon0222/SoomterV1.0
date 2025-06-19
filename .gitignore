@@ -7,3 +7,5 @@
 /inspectionProfiles/profiles_settings.xml
 /modules.xml
 .env
+__pycache__/
+*.pyc
