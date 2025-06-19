@@ -51,6 +51,19 @@ async def saveLocation(file, db):
 
     contents = await file.read()
     decoded = contents.decode("utf-8")
-    csv_reader = csv.DictReader(StringIO(decoded))
+    csv_reader = csv.reader(StringIO(decoded), delimiter="\t")
 
-    return None
+    next(csv_reader, None)
+
+    for row in csv_reader:
+        place = row[0].split(',')
+        location_model = LocationTable(
+            AreaName=place[0],
+            AreaType=place[1],
+            Latitude=float(place[2]),
+            Longitude=float(place[3])
+        )
+        db.add(location_model)
+        db.commit()
+
+    return make_response(code=success)

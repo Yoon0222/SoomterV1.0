@@ -12,6 +12,7 @@ class LocationTable(Base):
     Latitude = Column(Float, nullable=False)
     Longitude = Column(Float, nullable=False)
     CreationDate = Column(TIMESTAMP, nullable=False, server_default=func.now())
+    AreaType = Column(String(50))
 
 class LocationOut(BaseModel):
 

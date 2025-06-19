@@ -13,8 +13,8 @@ from service import map_service
 router = APIRouter()
 
 @router.post("/saveLocation", response_model=APIResponse)
-def saveLocation(db: Session = Depends(get_db), file: UploadFile = File(...)):
-    return map_service.saveLocation(file, db)
+async def saveLocation(db: Session = Depends(get_db), file: UploadFile = File(...)):
+    return await map_service.saveLocation(file, db)
 
 @router.post("/getLocations", response_model=APIResponse)
 def getLocations(loc : Location, db: Session = Depends(get_db)):
