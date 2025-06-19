@@ -15,7 +15,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def createNewUser(user: UserCreate, db: Session):
     existing_user = db.query(UsersTable).filter(UsersTable.UserId == user.UserId).first()
     if existing_user:
-        return make_response(data=user.UserId,error=user.UserId+" already existing ID",code=fail)
+        return make_response(error=user.UserId+" already existing ID",code=fail)
 
     hashed_password = pwd_context.hash(user.Password)
 
@@ -31,14 +31,14 @@ def createNewUser(user: UserCreate, db: Session):
     db.commit()
     db.refresh(user_model)
 
-    return make_response(data=user, code=success, message="User Create Success")
+    return make_response(code=success, message="User Create Success")
 
 
 def checkDup(user, db):
     existing_user = db.query(UsersTable).filter(UsersTable.UserId == user.UserId).first()
     if existing_user:
-        return make_response(data=user.UserId, error=user.UserId + " already existing ID", code=fail)
-    return make_response(data=user.UserId, code=success)
+        return make_response(error=user.UserId + " already existing ID", code=fail)
+    return make_response(code=success)
 
 
 def userLogin(userlogin, db):
@@ -49,4 +49,4 @@ def userLogin(userlogin, db):
     if not pwd_context.verify(userlogin.Password,user.Password):
         return make_response(error="Incorrect password", code=fail)
 
-    return make_response(code=success, data=user.UserId, message="Login Success")
+    return make_response(code=success, message="Login Success")
