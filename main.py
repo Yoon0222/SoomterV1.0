@@ -5,7 +5,7 @@ from router.main_router import router as main_router
 from router.map_router import router as map_router
 from utils.exception import register_exception_handlers
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 register_exception_handlers(app)
 
