@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from model.code import fail, success
 
 from fastapi import UploadFile, File
-import csv
+import csv, requests
 from io import StringIO
 
 from model.map import LocationTable, LocationOut
@@ -11,6 +11,20 @@ from model.map import LocationTable, LocationOut
 from utils.response import make_response
 
 from math import pi, cos, sin, sqrt, atan2, radians
+
+def get_latlng_from_naver(address: str):
+    headers = {
+        "X-NCP-APIGW-API-KEY-ID": "YOUR_CLIENT_ID",
+        "X-NCP-APIGW-API-KEY": "YOUR_CLIENT_SECRET"
+    }
+    params = {"query": address}
+    res = requests.get("https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode", headers=headers, params=params)
+
+    if res.status_code == 200:
+        items = res.json().get("addresses")
+        if items:
+            return float(items[0]["y"]), float(items[0]["x"])  # 위도, 경도
+    return None
 
 def haversine(lat1, lng1, lat2, lng2):
     R = 6371
@@ -61,9 +75,44 @@ async def saveLocation(file, db):
             AreaName=place[0],
             AreaType=place[1],
             Latitude=float(place[2]),
-            Longitude=float(place[3])
+            Longitude=float(place[3]),
+            AreaAddress=place[4]
         )
         db.add(location_model)
         db.commit()
 
     return make_response(code=success)
+
+
+def getLocationsByName(loc, db):
+    match = db.query(LocationTable).filter(LocationTable.AreaAddress.like(loc.LocationAddr)).first()
+
+    if match:
+        latitude, longitude = match.Latitude, match.Longitude
+    else:
+        # 2. NAVER API 호출
+        coords = get_latlng_from_naver(loc.LocationAddr)
+        if not coords:
+            return make_response(code=fail, message="주소를 찾을 수 없습니다", error="Address Not Found")
+        latitude, longitude = coords
+
+    R = 6371
+    delta_lat = (1.0 / R) * (180 / pi)
+    delta_lng = delta_lat / cos(radians(latitude))
+
+    min_lat = latitude - delta_lat
+    max_lat = latitude + delta_lat
+    min_lng = longitude - delta_lng
+    max_lng = longitude + delta_lng
+
+    candidates = db.query(LocationTable).filter(
+        LocationTable.Latitude.between(min_lat, max_lat),
+        LocationTable.Longitude.between(min_lng, max_lng)
+    ).all()
+
+    filtered = [
+        area for area in candidates
+        if haversine(latitude, longitude, area.Latitude, area.Longitude) <= 1.0
+    ]
+
+    return make_response(data=filtered, code=success, schema_class=LocationOut)

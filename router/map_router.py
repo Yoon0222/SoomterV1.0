@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile, File
 
 from sqlalchemy.orm import Session
 
-from model.map import Location
+from model.map import Location, SearchByAddr
 
 from database.conn import get_db
 from model.response import APIResponse
@@ -19,3 +19,7 @@ async def saveLocation(db: Session = Depends(get_db), file: UploadFile = File(..
 @router.post("/getLocations", response_model=APIResponse)
 def getLocations(loc : Location, db: Session = Depends(get_db)):
     return map_service.getLocations(loc, db)
+
+@router.post("/searchNearby", response_model=APIResponse)
+def searchNearby(loc : SearchByAddr, db: Session = Depends(get_db)):
+    return map_service.getLocationsByName(loc, db)

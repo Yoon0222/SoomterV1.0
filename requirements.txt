@@ -2,12 +2,7 @@ fastapi
 uvicorn[standard]
 pydantic
 python-dotenv
-httpx
 sqlalchemy
-databases
-alembic
-pytest
-pytest-asyncio
 requests
 dotenv
 passlib[bcrypt]
