@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from database.conn import Base
 
 
+
 class UsersTable(Base):
     __tablename__ = 'USERS'
 
@@ -14,6 +15,7 @@ class UsersTable(Base):
     Password = Column(String(200), nullable=False)                      # 암호화된 비밀번호
     CreationDate = Column(TIMESTAMP, server_default=func.now())        # 생성일시 (자동)
     UserPhone = Column(String(100), nullable=False)
+    OTP = Column(String(10))
 
 
 class UserCreate(BaseModel):
@@ -29,3 +31,17 @@ class UserDuplicateCheck(BaseModel):
 class UserLogin(BaseModel):
     UserId : str
     Password : str
+
+class UserFind(BaseModel):
+    UserEmail : str
+
+class UserSendOTP(BaseModel):
+    UserId : str
+
+class UserCheckOTP(BaseModel):
+    UserId : str
+    OTP : str
+
+class UserResetPassword(BaseModel):
+    UserId: str
+    Password: str
