@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from model.response import APIResponse
-from utils.response import make_response
 from model.users import (
     UserCreate,
     UserDuplicateCheck,
@@ -33,18 +32,18 @@ def userLogin(user: UserLogin, db: Session = Depends(get_db)):
 
 #사용자 이메일로 사용자 ID 전송
 @router.post("/findUser", response_model=APIResponse)
-def findUser(user: UserFind, db: Session = Depends(get_db)):
-    return users_service.findUser(user, db)
+async def findUser(user: UserFind, db: Session = Depends(get_db)):
+    return await users_service.findUser(user, db)
 
 #사용자 이메일로 OTP 인증
 @router.post("/sendOtp", response_model=APIResponse)
-def sendOtp(user: UserSendOTP, db: Session = Depends(get_db)):
-    return users_service.sendOtp(user, db)
+async def sendOtp(user: UserSendOTP, db: Session = Depends(get_db)):
+    return await users_service.sendOtp(user, db)
 
 # 사용자 OTP 인증 성공 시 이메일로 임시 비밀번호 송부
 @router.post("/checkOtp", response_model=APIResponse)
-def checkOtp(user: UserCheckOTP, db: Session = Depends(get_db)):
-    return users_service.checkOtp(user, db)
+async def checkOtp(user: UserCheckOTP, db: Session = Depends(get_db)):
+    return await users_service.checkOtp(user, db)
 
 
 @router.post("/resetPassword", response_model=APIResponse)

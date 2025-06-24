@@ -41,7 +41,7 @@ def register_exception_handlers(app):
     async def http_exception_handler(request: Request, exc: StarletteHTTPException):
         return JSONResponse(
             status_code=exc.status_code,
-            content=APIResponse(success=False, code=str(exc.status_code), error=str(exc.detail)).dict()
+            content=APIResponse(success=False, code=fail, error=str(exc.detail)).dict()
         )
 
     @app.exception_handler(RequestValidationError)
@@ -54,6 +54,6 @@ def register_exception_handlers(app):
     @app.exception_handler(CustomAPIException)
     async def custom_exception_handler(request: Request, exc: CustomAPIException):
         return JSONResponse(
-            status_code=exc.code,
-            content=APIResponse(success=False, code=str(exc.code), error=exc.message).dict()
+            status_code=500,
+            content=APIResponse(success=False, code=fail, error=exc.message).dict()
         )

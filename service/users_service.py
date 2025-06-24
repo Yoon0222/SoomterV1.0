@@ -59,7 +59,7 @@ def userLogin(userlogin, db):
 
 async def findUser(user, db):
 
-    existing_user = db.query(UsersTable).filter(UsersTable.UserId == user.UserEmail).first()
+    existing_user = db.query(UsersTable).filter(UsersTable.UserEmail == user.UserEmail).first()
     if user:
         email = existing_user.UserEmail
         id = existing_user.UserId
@@ -73,10 +73,11 @@ async def findUser(user, db):
             await send(
                 message,
                 hostname=SMTP_HOST,
-                port=SMTP_PORT,
+                port=465,
                 username=SMTP_USER,
                 password=SMTP_PASSWORD,
                 use_tls=True,
+                start_tls=False
             )
         except SMTPException:
             raise CustomAPIException(code=fail, message="SMTP Error")
@@ -118,10 +119,11 @@ async def sendOtp(user, db):
             await send(
                 message,
                 hostname=SMTP_HOST,
-                port=SMTP_PORT,
+                port=465,
                 username=SMTP_USER,
                 password=SMTP_PASSWORD,
                 use_tls=True,
+                start_tls=False
             )
         except SMTPException:
             raise CustomAPIException(code=fail, message="SMTP Error")
@@ -154,10 +156,11 @@ async def checkOtp(user, db):
             await send(
                 message,
                 hostname=SMTP_HOST,
-                port=SMTP_PORT,
+                port=465,
                 username=SMTP_USER,
                 password=SMTP_PASSWORD,
                 use_tls=True,
+                start_tls=False
             )
         except SMTPException:
             raise CustomAPIException(code=fail, message="SMTP Error")
