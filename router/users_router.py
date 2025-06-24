@@ -42,7 +42,7 @@ def sendOtp(user: UserSendOTP, db: Session = Depends(get_db)):
     return users_service.sendOtp(user, db)
 
 # 사용자 OTP 인증 성공 시 이메일로 임시 비밀번호 송부
-@router.posst("/checkOtp", response_model=APIResponse)
+@router.post("/checkOtp", response_model=APIResponse)
 def checkOtp(user: UserCheckOTP, db: Session = Depends(get_db)):
     return users_service.checkOtp(user, db)
 
