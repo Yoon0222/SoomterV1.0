@@ -3,9 +3,11 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi.middleware.cors import CORSMiddleware
 
-from router.users_router import router as user_router
-from router.main_router import router as main_router
-from router.map_router import router as map_router
+from router.user.users_router import router as user_router
+from router.user.main_router import router as main_router
+from router.user.map_router import router as map_router
+from router.admin.admin_router import router as admin_router
+
 from utils.exception import register_exception_handlers
 
 app = FastAPI()
@@ -23,6 +25,8 @@ register_exception_handlers(app)
 app.include_router(user_router, prefix="/user", tags=["Users"])
 app.include_router(main_router, prefix="/main", tags=["Main"])
 app.include_router(map_router, prefix="/map", tags=["Map"])
+app.include_router(admin_router, prefix="/admin", tags=["Admin"])
+
 
 def custom_openapi():
     if app.openapi_schema:

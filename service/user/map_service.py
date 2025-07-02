@@ -1,12 +1,9 @@
-from passlib.context import CryptContext
-from sqlalchemy.orm import Session
 from model.code import fail, success
 
-from fastapi import UploadFile, File
 import csv, requests
 from io import StringIO
 
-from model.map import LocationTable, LocationOut
+from model.user.map import LocationTable, LocationOut
 
 from utils.response import make_response
 

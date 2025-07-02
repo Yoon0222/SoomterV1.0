@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from database.conn import get_db
 from model.response import APIResponse
-from model.users import (
+
+from model.user.users import (
     UserCreate,
     UserDuplicateCheck,
     UserLogin,
@@ -11,10 +12,7 @@ from model.users import (
     UserSendOTP,
 UserCheckOTP
 )
-from database.conn import get_db
-
-
-from service import users_service
+from service.user import users_service
 
 router = APIRouter()
 

@@ -16,6 +16,8 @@ class UsersTable(Base):
     CreationDate = Column(TIMESTAMP, server_default=func.now())        # 생성일시 (자동)
     UserPhone = Column(String(100), nullable=False)
     OTP = Column(String(10))
+    UserType = Column(Integer, nullable=False)
+    
 
 
 class UserCreate(BaseModel):

@@ -2,13 +2,12 @@ from fastapi import APIRouter, Depends, UploadFile, File
 
 from sqlalchemy.orm import Session
 
-from model.map import Location, SearchByAddr
+from model.user.map import Location, SearchByAddr
 
 from database.conn import get_db
 from model.response import APIResponse
 
-
-from service import map_service
+from service.user import map_service
 
 router = APIRouter()
 

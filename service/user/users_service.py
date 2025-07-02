@@ -1,14 +1,14 @@
 from smtplib import SMTPException
 
 from utils.exception import CustomAPIException
-from model.users import UserCreate, UsersTable
+from model.user.users import UserCreate, UsersTable
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from model.code import fail, success
 
 from utils.response import make_response
 
-from database.config import SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
+from database.config import SMTP_HOST, SMTP_USER, SMTP_PASSWORD
 from aiosmtplib import send
 from email.message import EmailMessage
 import random
