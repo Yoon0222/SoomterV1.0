@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP
+from sqlalchemy import Column, Integer, String, TIMESTAMP, UniqueConstraint
 from sqlalchemy.sql import func
 from pydantic import BaseModel
 from database.conn import Base
@@ -17,7 +17,10 @@ class UsersTable(Base):
     UserPhone = Column(String(100), nullable=False)
     OTP = Column(String(10))
     UserType = Column(Integer, nullable=False)
-    
+
+    __table_args__ = (
+        UniqueConstraint('UserEmail', name='user_email_unique'),
+    )
 
 
 class UserCreate(BaseModel):

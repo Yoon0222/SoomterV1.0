@@ -18,9 +18,13 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def createNewUser(user: UserCreate, db: Session):
-    existing_user = db.query(UsersTable).filter(UsersTable.UserId == user.UserId).first()
+    existing_user = db.query(UsersTable).filter(
+        UsersTable.UserId == user.UserId,
+        UsersTable.UserEmail != user.UserEmail
+    ).first()
     if existing_user:
         return make_response(error=user.UserId+" already existing ID",code=fail)
+
 
     hashed_password = pwd_context.hash(user.Password)
 

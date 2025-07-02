@@ -10,6 +10,8 @@ from router.admin.admin_router import router as admin_router
 
 from utils.exception import register_exception_handlers
 
+from database.conn import engine, Base
+
 app = FastAPI()
 
 app.add_middleware(
@@ -47,6 +49,10 @@ def custom_openapi():
     return app.openapi_schema
 
 app.openapi = custom_openapi
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True) #reload=conf().PROJ_RELOAD
