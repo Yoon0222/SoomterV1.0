@@ -12,3 +12,4 @@ def adminLogin(admin: UserLogin, db: Session):
     if not is_admin:
         return make_response(error="Not an Admin", code=fail)
     return make_response(code=success, message="Login Success")
+
